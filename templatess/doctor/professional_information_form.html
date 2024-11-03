@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Information Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, .read-only {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .read-only {
+            background-color: #e9ecef; /* Light gray background for read-only fields */
+            border: none; /* No border for read-only fields */
+            cursor: not-allowed; /* Show not-allowed cursor */
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Additional Information for Dr. {{ doctor.first_name }} {{ doctor.last_name }}</h1>
+    <form action="{% url 'Doctor:professional_info' doctor_id=doctor_id %}" method="POST">
+
+        {% csrf_token %}
+
+        <!-- Hidden field for doctor_account if you still want to send it (optional) -->
+        <input type="hidden" name="doctor_account" value="{{ doctor_id }}">
+
+        <label for="specialization">Specialization:</label>
+        <input type="text" name="specialization" id="specialization" required aria-label="Specialization">
+
+        <label for="qualification">Qualification:</label>
+        <input type="text" name="qualification" id="qualification" required aria-label="Qualification">
+
+        <label for="years_of_experience">Years of Experience:</label>
+        <input type="number" name="years_of_experience" id="years_of_experience" min="0" required aria-label="Years of Experience">
+
+        <label for="medical_license_number">Medical License Number:</label>
+        <input type="text" name="medical_license_number" id="medical_license_number" required aria-label="Medical License Number">
+
+        <label for="license_issuing_authority">License Issuing Authority:</label>
+        <input type="text" name="license_issuing_authority" id="license_issuing_authority" required aria-label="License Issuing Authority">
+
+        <label for="license_expiry_date">License Expiry Date:</label>
+        <input type="date" name="license_expiry_date" id="license_expiry_date" required aria-label="License Expiry Date">
+
+        <label for="consultation_fee">Consultation Fee:</label>
+        <input type="number" name="consultation_fee" id="consultation_fee" step="0.01" required aria-label="Consultation Fee">
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

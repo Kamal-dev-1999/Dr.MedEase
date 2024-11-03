@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+        }
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+        label {
+            font-weight: bold;
+            color: #495057;
+        }
+        p {
+            margin: 0;
+            color: #495057;
+        }
+        .form-container {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background: #e9ecef;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+        .popup-content button {
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: 1px solid #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        {% if form_mode %}
+            <h1>Complete Your Profile</h1>
+            <div class="form-container">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ serializer.as_p }}
+                    <button type="submit">Save</button>
+                </form>
+                {% if errors %}
+                    <div class="error">
+                        {% for field, error in errors.items %}
+                            <p>{{ field }}: {{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <h1>Doctor Profile</h1>
+            <div class="doctor-profile">
+                <div class="profile-item">
+                    <label>First Name:</label>
+                    <p>{{ doctor.first_name }}</p>
+                </div>
+                <div class="profile-item">
+                    <label>Last Name:</label>
+                    <p>{{ doctor.last_name }}</p>
+                </div>
+                <div class="profile-item">
+                    <label>Email:</label>
+                    <p>{{ doctor.email }}</p>
+                </div>
+                <div class="profile-item">
+                    <label>Contact Number:</label>
+                    <p>{{ doctor.contact_number }}</p>
+                </div>
+
+                <h2>Professional Information</h2>
+                {% if professional_info %}
+                    <div class="profile-item">
+                        <label>Specialization:</label>
+                        <p>{{ professional_info.specialization }}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Qualification:</label>
+                        <p>{{ professional_info.qualification }}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Years of Experience:</label>
+                        <p>{{ professional_info.years_of_experience }}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Medical License Number:</label>
+                        <p>{{ professional_info.medical_license_number }}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>License Issuing Authority:</label>
+                        <p>{{ professional_info.license_issuing_authority }}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>License Expiry Date:</label>
+                        <p>{{ professional_info.license_expiry_date }}</p>
+                    </div>
+                    <div class="profile-item">
+                        <h3><label style="color:#059803">Consultation Fee:</label></h3>
+                        <h3><p style="color:#0056b3">{{ professional_info.consultation_fee }}</p></h3>
+                    </div>
+                {% else %}
+                    <p>No professional information available.</p>
+                {% endif %}
+
+                <h2>Work Details</h2>
+                {% if work_info %}
+                    <div class="profile-item">
+                        <label>Current Hospital:</label>
+                        <p>{{ work_info.current_hospital }}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Office Address:</label>
+                        <p>{{ work_info.office_address }}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Consultation Hours:</label>
+                        <p>{{ work_info.consultation_hours }}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Working Days:</label>
+                        <p>{{ work_info.working_days }}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Teleconsultation:</label>
+                        <p>{{ work_info.teleconsultation|yesno:"Yes,No" }}</p>
+                    </div>
+                {% else %}
+                    <p>No work details available.</p>
+                {% endif %}
+                
+            </div>
+        {% endif %}
+
+        <h2>Additional Information</h2>
+        {% if additional_info %}
+            <div class="profile-item">
+                <label>Languages Spoken:</label>
+                <p>{{ additional_info.languages_spoken }}</p>
+            </div>
+            <div class="profile-item">
+                <label>Certifications:</label>
+                <p>{{ additional_info.certifications }}</p>
+            </div>
+            <div class="profile-item">
+                <label>Achievements:</label>
+                <p>{{ additional_info.achievements }}</p>
+            </div>
+            <div class="profile-item">
+                <label>Bio:</label>
+                <p>{{ additional_info.bio }}</p>
+            </div>
+            <div class="profile-item">
+                <label>Special Notes:</label>
+                <p>{{ additional_info.special_notes }}</p>
+            </div>
+        {% else %}
+            <p>No additional information available.</p>
+        {% endif %}
+
+        <!-- Update and Cancel Buttons -->
+        <a href="javascript:void(0)" onclick="openPopup()" class="btn btn-primary">Update</a>
+        <a href="{% url 'Doctor:home' %}" class="btn btn-secondary">Cancel</a>
+
+        <!-- Popup for Update Options -->
+        <div id="updatePopup" class="popup">
+            <div class="popup-content">
+                <h3>Select Information to Update</h3>
+                <a href="{% url 'Doctor:professional_info' doctor_id=doctor_id %}" onclick="navigateToUpdate('professional'); return false;">Professional Info</a>
+<a href="#" onclick="navigateToUpdate('work'); return false;">Work Details</a>
+<a href="#" onclick="navigateToUpdate('additional'); return false;">Additional Info</a>
+
+                <br><br>
+                <button onclick="closePopup()">Cancel</button>
+            </div>
+        </div>
+
+        <script>
+            // Show the popup
+            function openPopup() {
+                document.getElementById("updatePopup").style.display = "flex";
+            }
+
+            // Hide the popup
+            function closePopup() {
+                document.getElementById("updatePopup").style.display = "none";
+            }
+
+        
+        </script>
+    </div>
+</body>
+</html>
