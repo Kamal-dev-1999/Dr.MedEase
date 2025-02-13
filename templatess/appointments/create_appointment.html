@@ -1,0 +1,65 @@
+{% extends 'marketplace/base.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Appointment</title>
+</head>
+<body>
+    <h2>Create Appointment</h2>
+    
+    <!-- Display form errors if any -->
+    {% if form.errors %}
+        <ul style="color: red;">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <!-- Appointment Form -->
+    <form method="POST" action="{% url 'patient:create-appointment' %}">
+        {% csrf_token %}
+        <div>
+            <label for="patient_name">Patient Name:</label>
+            <input type="text" name="patient_name" id="patient_name" required>
+        </div>
+        <div>
+            <label for="patient_contact">Patient Contact:</label>
+            <input type="text" name="patient_contact" id="patient_contact" required>
+        </div>
+        <div>
+            <label for="appointment_date">Appointment Date:</label>
+            <input type="date" name="appointment_date" id="appointment_date" required>
+        </div>
+        <div>
+            <label for="appointment_time">Appointment Time:</label>
+            <input type="time" name="appointment_time" id="appointment_time" required>
+        </div>
+        <div>
+            <label for="symptoms">Symptoms:</label>
+            <textarea name="symptoms" id="symptoms"></textarea>
+        </div>
+        <div>
+            <label for="doctor">Doctor:</label>
+            <select name="doctor" id="doctor" required>
+                {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}">{{ doctor.full_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="is_confirmed">Is Confirmed:</label>
+            <input type="checkbox" name="is_confirmed" id="is_confirmed">
+        </div>
+        
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+{% endblock %}

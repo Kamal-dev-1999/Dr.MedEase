@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <style>
+    .card {
+      border: 1px solid #ddd;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .doctor-card {
+      transition: transform 0.3s;
+    }
+
+    .doctor-card:hover {
+      transform: scale(1.05);
+    }
+
+    .doctor-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .navbar {
+      background-color: #2575fc;
+      padding: 10px 20px;
+    }
+
+    .navbar .nav-item {
+      margin-right: 20px;
+    }
+
+    .navbar .nav-link {
+      color: white;
+    }
+
+    .search-input {
+      width: 300px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand text-white" href="#">Patient Dashboard</a>
+      <div class="ml-auto">
+        <ul class="nav">
+          <li class="nav-item"><a class="nav-link" href="">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="">Doctors</a></li>
+          
+
+          <li class="nav-item"><a class="nav-link" href="{% url 'Patient:create_appointment'%}">Book Appointment</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'Patient:view_appointments'%}">My Appointments</a></li>
+          {% if is_patient %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'Patient:patient_logout' %}">Logout</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Sidebar/Navigation Section -->
+    <div class="container mt-4">
+      <!-- Search for Doctors Section -->
+      <div id="search-doctors" class="mb-4">
+        <input type="text" class="form-control search-input" id="doctorSearch" placeholder="Search for doctors..." onkeyup="filterDoctors()">
+      </div>
+
+      <!-- Doctors Section -->
+      <div id="doctors-section" class="row">
+        <!-- Doctor Card -->
+        <div class="col-md-3 doctor-card" data-name="Dr. John Doe">
+          <div class="card">
+            <img src="https://via.placeholder.com/200x200" class="doctor-image" alt="Doctor Image">
+            <div class="card-body">
+              <h5 class="card-title">Dr. John Doe</h5>
+              <p class="card-text">Specialty: Cardiologist</p>
+              <a href="#" class="btn btn-primary">View Profile</a>
+            </div>
+          </div>
+        </div>
+        <!-- Doctor Card -->
+        <div class="col-md-3 doctor-card" data-name="Dr. Jane Smith">
+          <div class="card">
+            <img src="https://via.placeholder.com/200x200" class="doctor-image" alt="Doctor Image">
+            <div class="card-body">
+              <h5 class="card-title">Dr. Jane Smith</h5>
+              <p class="card-text">Specialty: Neurologist</p>
+              <a href="#" class="btn btn-primary">View Profile</a>
+            </div>
+          </div>
+        </div>
+        <!-- Add more doctor cards here -->
+      </div>
+
+      <!-- Appointments Section -->
+      {% block content %}
+      {% endblock %}
+      <div id="appointments" class="mt-5">
+        <h3>My Appointments</h3>
+        <div class="appointment-list">
+          <p>No appointments yet!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Filter Doctors by Name
+    function filterDoctors() {
+      let searchQuery = document.getElementById('doctorSearch').value.toLowerCase();
+      let doctorCards = document.querySelectorAll('.doctor-card');
+
+      doctorCards.forEach(card => {
+        let doctorName = card.getAttribute('data-name').toLowerCase();
+        if (doctorName.includes(searchQuery)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

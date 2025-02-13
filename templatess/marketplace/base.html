@@ -1,0 +1,244 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>{% block title %}{% endblock %} | Kamal</title>
+</head>
+<body class="flex overflow-x-hidden bg-gray-100">
+  <!-- Sidebar -->
+  <aside
+    id="sidebar"
+    class="fixed inset-y-0 left-0 w-64 bg-gray-800 text-white transform -translate-x-full transition-transform duration-300 lg:translate-x-0 lg:relative z-40 flex flex-col justify-between"
+  >
+    <!-- Menu Items -->
+    <div class="p-6">
+      <h2 class="text-2xl font-semibold text-teal-500 mb-6">Menu</h2>
+      <nav>
+        <ul class="space-y-4">
+          <!-- Home -->
+          <li>
+            <a
+              href="{% url 'Doctor:home' %}"
+              class="group flex items-center px-2 py-2 text-lg text-gray-300 hover:text-teal-400 transition-transform duration-200 hover:translate-x-2"
+            >
+              <!-- Home Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-gray-300 group-hover:text-teal-400 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10l9-7 9 7v11a2 2 0 01-2 2h-4a2 2 0 01-2-2V12H9v8a2 2 0 01-2 2H3a2 2 0 01-2-2z" />
+              </svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <!-- View Appointments -->
+          <li>
+            <a
+              href="{% url 'Doctor:doctor-appointments' %}"
+              class="group flex items-center px-2 py-2 text-lg text-gray-300 hover:text-teal-400 transition-transform duration-200 hover:translate-x-2"
+            >
+              <!-- Calendar Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-gray-300 group-hover:text-teal-400 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M3 11h18M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span>View Appointments</span>
+            </a>
+          </li>
+
+          <!-- Inventory with Dropdown -->
+          <li class="relative">
+            <a
+              href="#"
+              class="group flex items-center px-2 py-2 text-lg text-gray-300 hover:text-teal-400 transition-transform duration-200 hover:translate-x-2 cursor-pointer"
+              onclick="toggleDropdown(event)"
+            >
+              <!-- Inventory Icon (Clipboard) -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-gray-300 group-hover:text-teal-400 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v1h14V7a2 2 0 00-2-2h-2m-6 0V4a2 2 0 012-2h2a2 2 0 012 2v1m-8 4h8m-8 4h8m-8 4h8" />
+              </svg>
+              <span>Inventory</span>
+            </a>
+            <!-- Dropdown Menu -->
+            <ul
+              id="inventoryDropdown"
+              class="hidden absolute left-0 mt-2 bg-gray-700 rounded shadow-lg w-56"
+            >
+              <li>
+                <a
+                  href="{% url 'Inventory:add_inventory' %}"
+                  class="block px-4 py-2 text-sm hover:bg-gray-600 hover:text-teal-400 transition-colors duration-200"
+                  >Add Inventory</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'Inventory:view_inventory' %}"
+                  class="block px-4 py-2 text-sm hover:bg-gray-600 hover:text-teal-400 transition-colors duration-200"
+                  >View Inventory</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'Inventory:add_seller' %}"
+                  class="block px-4 py-2 text-sm hover:bg-gray-600 hover:text-teal-400 transition-colors duration-200"
+                  >Add Seller</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'Inventory:add_order' %}"
+                  class="block px-4 py-2 text-sm hover:bg-gray-600 hover:text-teal-400 transition-colors duration-200"
+                  >Add Order</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'Inventory:view_order' %}"
+                  class="block px-4 py-2 text-sm hover:bg-gray-600 hover:text-teal-400 transition-colors duration-200"
+                  >View Orders</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Sidebar Footer: Authentication Links -->
+    <div class="p-6 border-t border-gray-700">
+      {% if request.user.is_authenticated %}
+        <!-- If a doctor profile exists, show profile link -->
+        {% if doctor_id %}
+          <a
+            href="{% url 'Doctor:profile' doctor_id=doctor_id %}"
+            class="flex items-center space-x-3 mb-4 hover:text-teal-400 transition-colors duration-200"
+          >
+            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-500 shadow-sm">
+              {% if doctor_profile.profile_picture %}
+                <img
+                  src="{{ doctor_profile.profile_picture.url }}"
+                  alt="Doctor Profile"
+                  class="w-full h-full object-cover"
+                />
+              {% else %}
+                <img
+                  src="{% static 'img/doctors/image.png' %}"
+                  alt="Default Profile"
+                  class="w-full h-full object-cover"
+                />
+              {% endif %}
+            </div>
+            <span>Profile</span>
+          </a>
+        {% endif %}
+        {% if user.is_doctor %}
+          <a
+            href="{% url 'Doctor:logout' %}"
+            class="flex items-center justify-center px-4 py-2 text-lg font-semibold bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-transform duration-200 hover:translate-x-2"
+          >
+            <!-- Logout Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 01-2-2h4a2 2 0 012 2v1" />
+            </svg>
+            <span>Logout</span>
+          </a>
+        {% endif %}
+      {% else %}
+        <a
+          href="{% url 'Doctor:signup' %}"
+          class="flex items-center justify-center px-4 py-2 text-lg font-semibold bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-transform duration-200 hover:translate-x-2"
+        >
+          <!-- Sign Up Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3M8 7a4 4 0 100 8 4 4 0 000-8zm-6 3a9 9 0 1118 0H2z" />
+          </svg>
+          <span>Sign Up</span>
+        </a>
+        <a
+          href="{% url 'Doctor:login' %}"
+          class="flex items-center justify-center mt-4 px-4 py-2 text-lg font-semibold bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-transform duration-200 hover:translate-x-2"
+        >
+          <!-- Log In Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H3m0 0l4-4m-4 4l4 4" />
+          </svg>
+          <span>Log In</span>
+        </a>
+      {% endif %}
+    </div>
+  </aside>
+
+  <!-- Mobile Overlay -->
+  <div
+    id="overlay"
+    class="fixed inset-0 bg-black opacity-50 hidden lg:hidden z-30"
+    onclick="toggleSidebar()"
+  ></div>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col min-h-screen">
+    <!-- Sticky Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white shadow-md border-b border-gray-200">
+      <div class="flex items-center justify-between px-6 py-4">
+        <!-- Sidebar Toggle Button (Mobile) -->
+        <button
+          class="lg:hidden text-gray-800 hover:text-teal-500 focus:outline-none"
+          onclick="toggleSidebar()"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+        </button>
+
+        <!-- Brand / Logo -->
+        <a
+          href="/"
+          class="text-xl font-bold text-gray-800 hover:text-teal-500 transition-colors duration-200"
+        >Kamal Tripathi</a>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="px-6 py-6 flex-grow">
+      {% block content %}
+      {% endblock %}
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("-translate-x-full");
+      overlay.classList.toggle("hidden");
+    }
+
+    function toggleDropdown(event) {
+      event.preventDefault();
+      const dropdown = document.getElementById("inventoryDropdown");
+      dropdown.classList.toggle("hidden");
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+      const dropdown = document.getElementById("inventoryDropdown");
+      if (!event.target.closest(".relative")) {
+        dropdown.classList.add("hidden");
+      }
+    });
+  </script>
+</body>
+</html>

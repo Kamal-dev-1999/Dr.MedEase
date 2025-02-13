@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Details Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"], input[type="checkbox"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="checkbox"] {
+            width: auto;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Work Details Submission</h1>
+    <form action="{% url 'Doctor:work_details' doctor_id=doctor_id %}" method="POST">
+        
+        {% csrf_token %}
+
+        <!-- Hidden field for doctor_account if needed -->
+        <input type="hidden" name="doctor_account" value="{{ doctor_id }}">
+
+        <label for="current_hospital">Current Hospital:</label>
+        <input type="text" id="current_hospital" name="current_hospital" required aria-label="Current Hospital">
+
+        <label for="office_address">Office Address:</label>
+        <input type="text" id="office_address" name="office_address" required aria-label="Office Address">
+
+        <label for="consultation_hours">Consultation Hours:</label>
+        <input type="text" id="consultation_hours" name="consultation_hours" required aria-label="Consultation Hours">
+
+        <label for="working_days">Working Days:</label>
+        <input type="text" id="working_days" name="working_days" required aria-label="Working Days">
+
+        <label for="teleconsultation">Teleconsultation:</label>
+        <input type="checkbox" id="teleconsultation" name="teleconsultation" aria-label="Teleconsultation">
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

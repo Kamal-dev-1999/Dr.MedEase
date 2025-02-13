@@ -1,0 +1,113 @@
+{% extends 'marketplace/base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <style>
+        /* styles.css */
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .results .card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .card-body p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .cancel-btn, .reschedule-btn, .confirm-btn {
+            padding: 10px 15px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .cancel-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .reschedule-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .confirm-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Search Results for "{{ search_query }}"</h1>
+
+        {% if patients %}
+            <div class="results">
+                {% for patient in patients %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>{{ patient.patient_name }}</h3> <!-- Display patient name -->
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Doctor:</strong> {{ patient.doctor_name }}</p> <!-- Display doctor name -->
+                            <p><strong>Appointment Date:</strong> {{ patient.appointment_date }}</p> <!-- Display appointment date -->
+                        </div>
+
+                        <!-- Cancel Appointment -->
+                        <form method="POST" action="{% url 'Doctor:cancel_appointment' patient.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="cancel-btn">Cancel</button>
+                        </form>
+
+                        <!-- Reschedule Appointment -->
+                        <form method="POST" action="{% url 'Doctor:reschedule_appointment' patient.id %}">
+                            {% csrf_token %}
+                            <input type="date" name="new_date" required>
+                            <input type="time" name="new_time" required>
+                            <button type="submit" class="reschedule-btn">Reschedule</button>
+                        </form>
+
+                        <!-- Confirm Appointment -->
+                        {% if not patient.is_confirmed %}
+                            <form method="POST" action="{% url 'Doctor:confirm_appointment' patient.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="confirm-btn">Confirm</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No results found for "{{ search_query }}".</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock %}

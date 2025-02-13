@@ -1,0 +1,56 @@
+{% extends 'marketplace/base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+  <h2 class="text-2xl font-semibold mb-4">Inventory Stock</h2>
+{% if inventories %}
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% for record in inventories %}
+      <div class="bg-white shadow-lg rounded-lg p-6 relative">
+        <!-- Item Name -->
+        <h3 class="text-lg font-semibold text-gray-800">{{ record.item.name }}</h3>
+
+        <!-- Quantity in Stock -->
+        <p class="text-gray-700">
+          <span class="font-bold">Quantity in Stock:</span> {{ record.quantity_in_stock }}
+        </p>
+
+        <!-- Batch Number -->
+        {% if record.batch_number %}
+          <p class="text-gray-700">
+            <span class="font-bold">Batch:</span> {{ record.batch_number }}
+          </p>
+        {% endif %}
+
+        <!-- Expiration Date -->
+        {% if record.expiration_date %}
+          <p class="text-gray-700">
+            <span class="font-bold">Expiration Date:</span> {{ record.expiration_date }}
+          </p>
+        {% else %}
+          <p class="text-gray-700"><span class="font-bold">Expiration Date:</span> N/A</p>
+        {% endif %}
+
+        <!-- Low Stock Alert -->
+        {% if record.is_low_stock %}
+          <p class="text-red-600 font-semibold mt-2">⚠️ Low Stock!</p>
+        {% endif %}
+
+        <!-- Near Expiration Alert -->
+        {% if record.is_near_expiration %}
+          <p class="text-orange-600 font-semibold mt-2">⚠️ Near Expiration!</p>
+        {% endif %}
+
+        <!-- Added and Last Updated Dates -->
+        <div class="mt-4 text-sm text-gray-500">
+          <p>Added on: {{ record.added_date }}</p>
+          <p>Last updated: {{ record.last_updated }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+<p class="text-gray-700 text-lg font-semibold">No inventory records found.</p>
+  {% endif %}
+{% endblock %}

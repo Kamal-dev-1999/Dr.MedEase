@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Modern Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/singup.css' %}">
+</head>
+<body>
+  <div class="container">
+    <!-- Card Layout -->
+    <div class="card">
+      <div class="card-header">
+        Login to Your Account
+      </div>
+      <div class="card-body">
+        <!-- Login Form -->
+        <form method="POST" action="{% url 'Patient:patient_login' %}">
+          {% csrf_token %}
+          
+          <!-- Step 1: Account Info -->
+          <div class="form-section active" id="step-1">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-submit float-end">Login</button>
+          </div>
+        </form>
+        <div class="mt-3 text-center">
+          <a href="{% url 'Patient:patient_signup' %}" class="link-secondary">Don't have an account? Sign up</a>
+        </div>
+        
+      </div>
+    </div>
+
+  </div>
+
+<script src="{% static 'js/auth.js' %}"></script>
+</body>
+</html>

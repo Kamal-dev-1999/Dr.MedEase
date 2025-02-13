@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup - Multi-Step Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/singup.css' %}">
+</head>
+<body>
+  <div class="container mt-5">
+    <!-- Breadcrumb -->
+
+      
+    
+
+    <!-- Form Container -->
+    <div class="card">
+     
+      <div class="breadcrumb-step">
+        <div class="step active">User Information</div>
+        <div class="step">Personal Information</div>
+        <div class="step">Contact Information</div>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="{% url 'Patient:patient_signup' %}">
+          {% csrf_token %}
+
+          <!-- Step 1: Account Info -->
+          <div class="form-section active">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+           
+              <input type="text" class="form-control" id="username" name="username" required>
+
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+              
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="confirm_password" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-next float-end">Next</button>
+          </div>
+
+          <!-- Step 2: Personal Details -->
+          <div class="form-section">
+            <div class="mb-3">
+              <label for="first_name" class="form-label">First Name</label>
+              <input type="text" class="form-control" id="first_name" name="first_name" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="last_name" class="form-label">Last Name</label>
+              <input type="text" class="form-control" id="last_name" name="last_name" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="date_of_birth" class="form-label">Date of Birth</label>
+              <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="gender" class="form-label">Gender</label>
+              <select class="form-control" id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <button type="button" class="btn btn-secondary btn-prev">Previous</button>
+            <button type="button" class="btn btn-primary btn-next float-end">Next</button>
+          </div>
+
+          <!-- Step 3: Address -->
+          <div class="form-section">
+            <div class="mb-3">
+              <label for="contact_number" class="form-label">Contact Number</label>
+              <input type="text" class="form-control" id="contact_number" name="contact_number" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+            </div>
+            
+            <button type="button" class="btn btn-secondary btn-prev">Previous</button>
+            <button type="submit" class="btn btn-primary float-end">Signup</button>
+          </div>
+          Already have an account ?<a href="{% url 'Patient:patient_login' %}">Login</a>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'js/auth.js' %}"></script>
+</body>
+</html>

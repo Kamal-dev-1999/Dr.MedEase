@@ -1,0 +1,430 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Doctor Appointment Booking - Admin Dashboard</title>
+    <meta
+      name="description"
+      content="Doctor appointment booking site and admin dashboard for doctors to manage appointments and patient details."
+    />
+    <meta
+      name="keywords"
+      content="doctor booking, appointment system, admin dashboard"
+    />
+
+    <!-- Favicons -->
+    <link href="{% static 'img/favicon.png' %}" rel="icon" />
+    <link
+      href="{% static 'img/apple-touch-icon.png' %}"
+      rel="apple-touch-icon"
+    />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link
+      href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}"
+      rel="stylesheet"
+    />
+    <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet" />
+    <link
+      href="{% static 'vendor/glightbox/css/glightbox.min.css' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="{% static 'static/vendor/swiper/swiper-bundle.min.css' %}"
+      rel="stylesheet"
+    />
+
+    <!-- Main CSS File -->
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" />
+  </head>
+
+  <body class="index-page">
+    <header id="header" class="header d-flex align-items-center fixed-top">
+      <div
+        class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between"
+      >
+        <a
+          href="index.html"
+          class="logo d-flex align-items-center me-auto me-xl-0"
+        >
+          <h1 class="sitename">Dr.MedEase</h1>
+        </a>
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="#hero" class="active">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#doctors">Doctors</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+        <div class="header-buttons">
+          {% if not request.user.is_authenticated %}
+          <!-- Show login options for both patients and doctors if user is not authenticated -->
+          <a class="btn btn-primary" href="{% url 'Doctor:login' %}"
+            >Doctor Login</a
+          >
+          <a class="btn btn-secondary" href="{% url 'Patient:patient_login' %}"
+            >Patient Login</a
+          >
+          {% else %}
+          <!-- Show logout button based on user type -->
+          {% if is_doctor %}
+          <a class="btn btn-primary" href="{% url 'Doctor:logout' %}"
+            >Doctor Logout</a
+          >
+          {% else %}
+          <a class="btn btn-secondary" href="{% url 'Patient:patient_logout' %}"
+            >Patient Logout</a
+          >
+          {% endif %} {% endif %}
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- Hero Section -->
+      <section id="hero" class="hero section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <div class="hero-content" data-aos="fade-up" data-aos-delay="200">
+                <div class="company-badge mb-4">
+                  <i class="bi bi-heart-pulse me-2"></i>
+                  Your Health, Our Priority
+                </div>
+                <h1 class="mb-4">
+                  Schedule Appointments <br />
+                  Manage Patients <br />
+                  <span class="accent-text">All in One Place</span>
+                </h1>
+                <p class="mb-4 mb-md-5">
+                  Empowering doctors to efficiently manage their appointments
+                  and streamline patient care with our robust booking system.
+                </p>
+                <div class="hero-buttons">
+                  <a href="#about" class="btn btn-primary me-0 me-sm-2 mx-1"
+                    >Get Started</a
+                  >
+                  <a
+                    href="#video-tour"
+                    class="btn btn-link mt-2 mt-sm-0 glightbox"
+                  >
+                    <i class="bi bi-play-circle me-1"></i>
+                    Watch Demo
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="hero-image" data-aos="zoom-out" data-aos-delay="300">
+               
+                <img
+                  src="{% static 'img/doctors/main_doc-removebg-preview.png' %}"
+                  alt="Doctor Dashboard"
+                  class="img-fluid"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="about section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+          <div class="row gy-4 align-items-center justify-content-between">
+            <div class="col-xl-5" data-aos="fade-up" data-aos-delay="200">
+              <h2 class="about-title">Why Choose Us?</h2>
+              <p class="about-description">
+                Simplify your workflow with our all-in-one doctor appointment
+                booking platform. From scheduling to patient data management,
+                we’ve got you covered.
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <i class="bi bi-check-circle-fill"></i> Easy-to-use
+                  appointment scheduling
+                </li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i> Comprehensive patient
+                  profiles
+                </li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i> Secure data management
+                </li>
+              </ul>
+            </div>
+            <div class="col-xl-6" data-aos="fade-up" data-aos-delay="300">
+              <img
+                src="{% static 'img/doctors/doc1.jpg' %}"
+                alt="About Us"
+                class="img-fluid rounded-4"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features" class="features section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+          <div class="section-title">
+            <h2>Features</h2>
+            <p>Discover how our platform enhances your practice</p>
+          </div>
+          <div class="row gy-4">
+            <div class="col-lg-4 col-md-6">
+              <div class="feature-box text-center">
+                <i class="bi bi-calendar-check"></i>
+                <h4>Appointment Scheduling</h4>
+                <p>Schedule and manage appointments with ease.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="feature-box text-center">
+                <i class="bi bi-person-lines-fill"></i>
+                <h4>Patient Management</h4>
+                <p>Access and update comprehensive patient profiles.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="feature-box text-center">
+                <i class="bi bi-lock"></i>
+                <h4>Secure Platform</h4>
+                <p>Ensure your data remains safe and protected.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Doctors Section -->
+      <section id="doctors" class="doctors section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+          <div class="section-title">
+            <h2>Meet Our Doctors</h2>
+            <p>Highly skilled professionals dedicated to your care</p>
+          </div>
+         
+
+          {% if doctors %}
+          
+          {% for doctor in doctors %}
+          <div class="row gy-4">
+            <div class="cards col-lg-4 col-md-6">
+              <div class="doctor-card" onclick="openModal({{ doctor.id }})">
+                <div class="card border-0">
+                  {% if doctor.profile_picture %}
+                  <img
+                    src="{{ doctor.profile_picture.url }}"
+                    class="card-img-top"
+                    alt="{{ doctor.first_name }} {{ doctor.last_name }}"
+                  />
+                  {% else %}
+                  <img
+                    src="{% static 'img/doctors/image.png' %}"
+                    class="card-img-top"
+                    alt="{{ doctor.first_name }} {{ doctor.last_name }}"
+                  />
+                  {% endif %}
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      {{ doctor}}
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                      {{ doctor.specialty }}
+                    </h6>
+                    <p class="card-text">{{ doctor.experience }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal for Doctor Details -->
+<div
+id="doctor-modal-{{ doctor.id }}"
+class="modal"
+style="display: none"
+>
+<div class="modal-content">
+  <span class="close-btn" onclick="closeModal({{ doctor.id }})">&times;</span>
+  <h3>{{ doctor.first_name }} {{ doctor.last_name }}</h3>
+
+  {% if doctor.profile_picture %}
+    <img
+      src="{{ doctor.profile_picture.url }}"
+      alt="{{ doctor.first_name }} {{ doctor.last_name }}"
+      class="modal-img"
+    />
+  {% else %}
+    <img
+      src="{% static 'img/doctors/doc1.jpg' %}"
+      alt="{{ doctor.first_name }} {{ doctor.last_name }}"
+      class="modal-img"
+    />
+  {% endif %}
+
+  <p><strong>Specialty:</strong> {{ doctor.specialty }}</p>
+  <p><strong>Experience:</strong> {{ doctor.experience }} years</p>
+  <p><strong>Email:</strong> {{ doctor.email }}</p>
+  <p><strong>Contact:</strong> {{ doctor.contact_number }}</p>
+  <p><strong>Address:</strong> {{ doctor.address }}</p>
+
+  <!-- Additional Details -->
+  <p><strong>Qualification:</strong> {{ doctor.qualification }}</p>
+  <p><strong>Medical License Number:</strong> {{ doctor.medical_license_number }}</p>
+  <p><strong>License Expiry Date:</strong> {{ doctor.license_expiry_date }}</p>
+  <p><strong>Consultation Fee:</strong> {{ doctor.consultation_fee }} INR</p>
+  <p><strong>Consultation Hours:</strong> {{ doctor.consultation_hours }}</p>
+  <p><strong>Working Days:</strong> {{ doctor.working_days }}</p>
+  <p><strong>Teleconsultation Available:</strong> {% if doctor.teleconsultation %}Yes{% else %}No{% endif %}</p>
+
+  <!-- Additional Info -->
+  <h4>Additional Information</h4>
+  <p><strong>Languages Spoken:</strong> {{ doctor.languages_spoken }}</p>
+  <p><strong>Certifications:</strong> {{ doctor.certifications }}</p>
+  <p><strong>Achievements:</strong> {{ doctor.achievements }}</p>
+  <p><strong>Bio:</strong> {{ doctor.bio }}</p>
+  <p><strong>Special Notes:</strong> {{ doctor.special_notes }}</p>
+</div>
+</div>
+
+          {% endfor %}
+          {% else %}
+          <p>No doctors available</p>
+          {% endif %}
+          <script>
+            function openModal(doctorId) {
+              document.getElementById(
+                "doctor-modal-" + doctorId
+              ).style.display = "block";
+            }
+
+            function closeModal(doctorId) {
+              document.getElementById(
+                "doctor-modal-" + doctorId
+              ).style.display = "none";
+            }
+
+            // Close the modal if the user clicks outside the modal content
+            window.onclick = function (event) {
+              var modals = document.querySelectorAll(".modal");
+              modals.forEach(function (modal) {
+                if (event.target == modal) {
+                  modal.style.display = "none";
+                }
+              });
+            };
+          </script>
+        </div>
+      </section>
+      <style>
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed;
+          z-index: 1; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+          overflow: auto; /* Enable scrolling if the modal content is too big */
+        }
+
+        .modal-content {
+          background-color: white;
+          margin: 10% auto;
+          padding: 20px;
+          border-radius: 10px;
+          width: 60%;
+          max-width: 800px;
+        }
+
+        .modal-img {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          margin-bottom: 15px;
+        }
+
+        .close-btn {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      </style>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="container footer-top">
+        <div class="row gy-4">
+          <div class="col-lg-4 footer-about">
+            <h4>About Doctor Portal</h4>
+            <p>
+              Effortlessly manage appointments and patient details with our
+              doctor-first booking system.
+            </p>
+          </div>
+          <div class="col-lg-4 footer-contact">
+            <h4>Contact Us</h4>
+            <p>
+              123 Health Street<br />City, State, 12345<br />Email:
+              support@doctorportal.com<br />Phone: +123 456 7890
+            </p>
+          </div>
+          <div class="col-lg-4 footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Services</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <a
+      href="#"
+      id="scroll-top"
+      class="scroll-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+    <!-- Main JS File -->
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>

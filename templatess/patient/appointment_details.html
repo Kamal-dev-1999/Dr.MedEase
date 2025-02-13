@@ -1,0 +1,10 @@
+<!-- In your template -->
+{% for appointment in request.user.patient.appointments.all %}
+    <div class="appointment-card">
+        <h5>{{ appointment.date }}</h5>
+        <p>{{ appointment.description }}</p>
+        <a href="{% url 'Patient:view_appointment' pk=appointment.id %}" class="btn btn-success">View Appointment</a>
+    </div>
+{% empty %}
+    <p>You have no appointments.</p>
+{% endfor %}

@@ -1,0 +1,11 @@
+{% extends 'patient/base.html' %}
+
+{% block content %}
+  <h2>Confirm Appointment</h2>
+  <p>Do you want to confirm your appointment with Dr. {{ appointment.doctor }} scheduled for {{ appointment.appointment_date }} at {{ appointment.appointment_time }}?</p>
+
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit">Confirm</button>
+  </form>
+{% endblock %}

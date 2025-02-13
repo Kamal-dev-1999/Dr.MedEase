@@ -1,0 +1,16 @@
+{% extends 'patient/base.html' %}
+
+{% block content %}
+  <h2>Your Appointments</h2>
+  <ul>
+    {% for appointment in appointments %}
+      <li>
+        <a href="{% url 'Patient:view_appointment' pk=appointment.id %}">
+          {{ appointment.appointment_date }} - {{ appointment.appointment_time }} with Dr. {{ appointment.doctor }}
+        </a>
+      </li>
+    {% empty %}
+      <p>You have no appointments.</p>
+    {% endfor %}
+  </ul>
+{% endblock %}

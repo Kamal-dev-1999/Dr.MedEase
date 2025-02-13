@@ -1,0 +1,248 @@
+{% extends 'marketplace/base.html' %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor's Appointments</title>
+    <style>
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-details {
+            display: none;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        .card-buttons {
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .cancel-btn {
+            background-color: #ff4d4d;
+            color: white;
+        }
+        .reschedule-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .confirm-btn {
+            background-color: #007BFF;
+            color: white;
+        }
+        .filter-form {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 20px 0;
+            gap: 15px;
+        }
+        
+        .filter-label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .filter-select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            width: 200px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .filter-select:focus {
+            border-color: #007bff;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .filter-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        
+        .filter-btn:focus {
+            outline: none;
+        }
+        
+        .filter-btn:active {
+            background-color: #004085;
+            transform: translateY(0);
+        }
+        .filter-form {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .search-label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-right: 10px;
+        }
+        
+        .search-input {
+            padding: 10px 15px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 300px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            outline: none;
+        }
+        
+        .search-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        
+        .search-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .search-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        
+        .search-btn:focus {
+            outline: none;
+        }
+        
+        .search-btn:active {
+            background-color: #004085;
+            transform: translateY(0);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <!-- Filter Form -->
+    <form method="GET" action="{% url 'Doctor:filter_appointments' %}" class="filter-form">
+        <label for="status" class="filter-label">Filter by Status:</label>
+        <select name="status" id="status" class="filter-select">
+            <option value="">--All--</option>
+            <option value="confirmed" {% if request.GET.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+            <option value="canceled" {% if request.GET.status == 'canceled' %}selected{% endif %}>Canceled</option>
+        </select>
+        <button type="submit" class="filter-btn">Apply Filter</button>
+    </form>
+
+    <!-- Search Form -->
+    <form method="GET" action="{% url 'Doctor:search_patients' %}" class="filter-form">
+        <label for="search" class="search-label">Search Patient Name:</label>
+        <input type="text" id="search" name="search_query" class="search-input" 
+               placeholder="Enter patient name..." value="{{ request.GET.search_query }}">
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+
+    <!-- Appointments List -->
+    <h1>Upcoming Appointments for Dr. {{ doctor_profile }}</h1>
+
+    {% if patients %}
+        <h2>Search Results:</h2>
+        {% for patient in patients %}
+        <div class="card">
+            <div class="card-header">
+                <span>{{ patient.name }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    {% elif appointments %}
+        {% for appointment in appointments %}
+        <div class="card">
+            <div class="card-header" onclick="toggleDetails(this)">
+                <span>{{ appointment.patient_name }}</span>
+                <span>{{ appointment.appointment_date }} at {{ appointment.appointment_time }}</span>
+            </div>
+            <div class="card-details">
+                <p><strong>Symptoms:</strong> {{ appointment.symptoms }}</p>
+                <p><strong>Status:</strong> {{ appointment.is_confirmed|yesno:"Confirmed, Not Confirmed" }}</p>
+                <div class="card-buttons">
+                    <!-- Cancel Appointment -->
+                    <form method="POST" action="{% url 'Doctor:cancel_appointment' appointment.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="cancel-btn">Cancel</button>
+                    </form>
+                    <!-- Reschedule Appointment -->
+                    <form method="POST" action="{% url 'Doctor:reschedule_appointment' appointment.id %}">
+                        {% csrf_token %}
+                        <input type="date" name="new_date" required>
+                        <input type="time" name="new_time" required>
+                        <button type="submit" class="reschedule-btn">Reschedule</button>
+                    </form>
+                    <!-- Confirm Appointment -->
+                    {% if not appointment.is_confirmed %}
+                    <form method="POST" action="{% url 'Doctor:confirm_appointment' appointment.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="confirm-btn">Confirm</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No appointments or search results available for this doctor.</p>
+    {% endif %}
+    
+    <script>
+        function toggleDetails(cardHeader) {
+            const details = cardHeader.nextElementSibling;
+            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
+{% else %}
+    <h1>You are not logged in. Please <a href="{% url 'Doctor:login' %}">login</a> to view appointments.</h1>
+{% endif %}
+{% endblock %}

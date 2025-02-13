@@ -1,0 +1,14 @@
+error type 1:
+return render('appointments/view_appointments.html',{
+            'appointments':serializer.data
+        })
+
+TypeError at /appointments/
+join() argument must be str, bytes, or os.PathLike object, not 'dict'
+
+
+
+soltuion - the request is not passed in the render 
+return render(request,'appointments/view_appointments.html',{
+            'appointments':serializer.data
+        })

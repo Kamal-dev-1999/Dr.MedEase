@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Profile</title>
+</head>
+<body>
+    <h1>Doctor Profile for {{ doctor_profile.first_name }} {{ doctor_profile.last_name }}</h1>
+    
+    <p><strong>Email:</strong> {{ doctor_profile.email }}</p>
+    <p><strong>Username:</strong> {{ doctor_profile.username }}</p>
+    <p><strong>Date of Birth:</strong> {{ doctor_profile.date_of_birth }}</p>
+    <p><strong>Gender:</strong> {{ doctor_profile.gender }}</p>
+    <p><strong>Contact Number:</strong> {{ doctor_profile.contact_number }}</p>
+    <p><strong>Address:</strong> {{ doctor_profile.address }}</p>
+    
+    <h2>Professional Information</h2>
+    <p><strong>Specialization:</strong> {{ doctor_profile.professional_info.specialization }}</p>
+    <p><strong>Qualification:</strong> {{ doctor_profile.professional_info.qualification }}</p>
+    <p><strong>Years of Experience:</strong> {{ doctor_profile.professional_info.years_of_experience }}</p>
+    <p><strong>Medical License Number:</strong> {{ doctor_profile.professional_info.medical_license_number }}</p>
+    <p><strong>License Issuing Authority:</strong> {{ doctor_profile.professional_info.license_issuing_authority }}</p>
+    <p><strong>License Expiry Date:</strong> {{ doctor_profile.professional_info.license_expiry_date }}</p>
+    <p><strong>Consultation Fee:</strong> ${{ doctor_profile.professional_info.consultation_fee }}</p>
+    
+    <a href="{% url 'Doctor:logout' %}">Logout</a>
+</body>
+</html>

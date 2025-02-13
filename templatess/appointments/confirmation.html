@@ -1,0 +1,30 @@
+<!-- appointments/templates/appointments/confirmation.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Confirmation</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Appointment Confirmed!</h1>
+        <p>Thank you for booking your appointment with us. Below are the details:</p>
+
+        <div class="appointment-details">
+            <ul>
+                <li><strong>Patient Name:</strong> {{ appointment.patient_name }}</li>
+                <li><strong>Contact:</strong> {{ appointment.patient_contact }}</li>
+                <li><strong>Doctor:</strong> {{ appointment.doctor }}</li>
+                <li><strong>Appointment Date:</strong> {{ appointment.appointment_date }}</li>
+                <li><strong>Appointment Time:</strong> {{ appointment.appointment_time }}</li>
+                <li><strong>Symptoms:</strong> {{ appointment.symptoms }}</li>
+            </ul>
+        </div>
+
+        <div class="actions">
+            <a href="{% url 'Patient:create-appointment' %}" class="btn">Back to Appointment Page</a>
+        </div>
+    </div>
+</body>
+</html>

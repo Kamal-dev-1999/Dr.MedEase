@@ -1,0 +1,29 @@
+<form method="POST">
+  {% csrf_token %}
+  
+  <label for="doctor">Select Doctor:</label>
+  <select name="doctor" required>
+      {% for doctor in doctors %}
+          <option value="{{ doctor.id }}">{{ doctor.user.first_name }} {{ doctor.user.last_name }}</option>
+      {% endfor %}
+  </select>
+
+  <label for="appointment_date">Appointment Date:</label>
+  <input type="date" name="appointment_date" required>
+
+  <label for="appointment_time">Appointment Time:</label>
+  <input type="time" name="appointment_time" required>
+
+  <label for="symptoms">Symptoms:</label>
+  <textarea name="symptoms"></textarea>
+
+  <button type="submit">Create Appointment</button>
+</form>
+
+{% if errors %}
+  <ul>
+      {% for field, error in errors.items %}
+          <li>{{ field }}: {{ error }}</li>
+      {% endfor %}
+  </ul>
+{% endif %}

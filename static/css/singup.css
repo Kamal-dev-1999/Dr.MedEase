@@ -1,0 +1,136 @@
+
+body {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.card {
+  width: 100%;
+  max-width: 650px;
+  border: none;
+  border-radius: 50px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+
+.card-header {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  text-align: center;
+  padding: 20px 15px;
+  font-size: 24px;
+  font-weight: bold;
+  border-bottom: none;
+}
+
+.breadcrumb-step {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px auto;
+  padding: 10px 20px;
+}
+
+.breadcrumb-step .step {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #aaa;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.breadcrumb-step .step.active {
+  color: #2575fc;
+  font-weight: 600;
+  border-bottom: 3px solid #2575fc;
+}
+
+.breadcrumb-step .step.completed {
+  color: #28a745;
+  border-bottom: 3px solid #28a745;
+}
+
+.card-body {
+  padding: 30px 40px;
+}
+
+.form-section {
+  display: none;
+  animation: fadeIn 0.5s;
+}
+
+.form-section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-control {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 15px;
+  font-size: 14px;
+}
+
+.btn {
+  font-size: 16px;
+  border-radius: 10px;
+  padding: 10px 20px;
+}
+
+.btn-next {
+  background-color: #2575fc;
+  color: white;
+}
+
+.btn-next:hover {
+  background-color: #1d63d5;
+}
+
+.btn-prev {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-prev:hover {
+  background-color: #5a6268;
+}
+
+.btn-submit {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-submit:hover {
+  background-color: #218838;
+}
+
+footer {
+  text-align: center;
+  margin-top: 20px;
+  color: white;
+}
+
+
+

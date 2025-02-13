@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor List</title>
+    <link rel="stylesheet" href=""> <!-- Include your CSS file if needed -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>List of Doctors</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Date of Birth</th>
+                <th>Gender</th>
+                <th>Contact Number</th>
+                <th>Email</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doctor in doctors %}
+    <tr>
+        <td>{{ doctor.first_name }}</td>
+        <td>{{ doctor.last_name }}</td>
+        <td>{{ doctor.date_of_birth }}</td>
+        <td>{{ doctor.gender }}</td>
+        <td>{{ doctor.contact_number }}</td>
+        <td>{{ doctor.email }}</td>
+        <td>{{ doctor.address }}</td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="7">No doctors available.</td>
+    </tr>
+{% endfor %}
+
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+{% extends 'marketplace/base.html' %}
+
+{% block content %}
+  <div class="container mx-auto p-6">
+    {% if messages %}
+            <div class="mt-4">
+                {% for message in messages %}
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">{{ message }}</strong>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <br></br>
+    <h2 class="text-2xl font-semibold mb-4">Add New Supplier</h2>
+
+    <!-- Form -->
+    <form method="POST" action="{% url 'Inventory:add_seller' %}">
+      {% csrf_token %}
+      <input type="hidden" id="doctor_id" name="doctor_id" value="{{ doctor_id }}">
+      <!-- Name Field -->
+      <div class="mb-4">
+        <label for="name" class="block text-gray-700">Supplier Name</label>
+        <input type="text" name="name" id="name" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter supplier name" required>
+      </div>
+
+      <!-- Contact Person Field -->
+      <div class="mb-4">
+        <label for="contact_person" class="block text-gray-700">Contact Person</label>
+        <input type="text" name="contact_person" id="contact_person" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter contact person's name" required>
+      </div>
+
+      <!-- Phone Number Field -->
+      <div class="mb-4">
+        <label for="phone_number" class="block text-gray-700">Phone Number</label>
+        <input type="tel" name="phone_number" id="phone_number" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter phone number" required>
+      </div>
+
+      <!-- Email Field -->
+      <div class="mb-4">
+        <label for="email" class="block text-gray-700">Email</label>
+        <input type="email" name="email" id="email" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter email address" required>
+      </div>
+
+      <!-- Address Field -->
+      <div class="mb-4">
+        <label for="address" class="block text-gray-700">Address</label>
+        <textarea name="address" id="address" rows="4" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter address" required></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mt-6">
+        <button type="submit" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Add Supplier
+        </button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
